@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local credentials/configuration
+secrets/
+credentials/
+config.local.*
+
+# Personal CVs and test documents
+cv-template2.pdf
+*.cv.pdf
+private-cvs/
+personal-cv/
+test-cvs/
+
+# Common generated files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,10 @@
+langchain
+langchain-openai
+langgraph
+langsmith
+openai
+python-docx
+pdfplumber
+ipython
+pydantic
+typing_extensions
