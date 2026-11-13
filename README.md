@@ -20,7 +20,7 @@ The assistant can extract text from a CV, retrieve structured information from j
 
 ```text
 CV-Assistant/
-├── 3.12 Connecting to LangSmith(1).ipynb
+├── AI_Powered_CV_and_Job_Matching_Assistant.ipynb
 ├── README.md
 ├── .gitignore
 └── requirements.txt
@@ -56,8 +56,8 @@ Place any CV used for testing in your local working folder. Do not commit person
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/<your-username>/<your-repository>.git
-   cd <your-repository>
+   git clone https://github.com/chiheb101/AI-Powered-CV-and-Job-Matching-Assistant.git
+   cd AI-Powered-CV-and-Job-Matching-Assistant
    ```
 
 2. Create and activate a virtual environment.
@@ -102,7 +102,7 @@ Place any CV used for testing in your local working folder. Do not commit person
    jupyter notebook
    ```
 
-6. Open `3.12 Connecting to LangSmith(1).ipynb` and run the cells in order.
+6. Open `AI_Powered_CV_and_Job_Matching_Assistant.ipynb` and run the cells in order.
 
 ## Configuration
 
