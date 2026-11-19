@@ -1,179 +1,260 @@
 # AI-Powered CV and Job-Matching Assistant
 
-A Python/Jupyter Notebook project that uses **LangGraph**, **LangChain**, and **OpenAI** to help users review a CV and compare it with online job postings.
+A Python-based AI assistant that helps users analyze their CVs, understand job requirements, and compare their profiles with online job opportunities.
 
-The assistant can extract text from a CV, retrieve structured information from job-posting URLs, and use the collected information to provide career-related feedback.
+The project uses **LangGraph**, **LangChain**, and **OpenAI** to create an interactive assistant capable of extracting information from CV documents, analyzing job postings, and providing personalized career-related feedback.
 
 ## Features
 
-- **CV text extraction:** Reads CV documents in PDF and DOCX formats.
-- **Legacy DOC support:** Attempts to convert `.doc` files to DOCX using LibreOffice (`soffice`).
-- **Job-posting analysis:** Uses the OpenAI `gpt-4o-search-preview` model with web search to extract information from a supplied job-posting URL.
-- **Structured job details:** Requests the job title, company, location, employment type, salary (if available), qualifications, responsibilities, benefits, application instructions, and posting date.
-- **CV and job comparison:** The agent can use the extracted CV and job-posting information to assess suitability and identify relevant strengths or gaps.
-- **CV improvement advice:** Provides suggestions for improving a CV for target roles.
-- **Tool-using agent:** LangGraph connects the assistant to the CV extraction and job-posting tools.
-- **Conversation state:** LangGraph's `MemorySaver` checkpointer maintains state for a conversation thread while the Python process is running.
-- **Optional tracing:** LangSmith tracing can be enabled to inspect agent execution.
+- **CV Text Extraction:** Extracts text from CV documents in PDF and DOCX formats.
+- **Legacy DOC Support:** Converts older `.doc` files into DOCX using LibreOffice.
+- **Job Posting Analysis:** Uses OpenAI GPT-4.1 with web search to retrieve and analyze information from job-posting URLs.
+- **Structured Job Information:** Extracts job title, company, location, employment type, salary, qualifications, responsibilities, benefits, application instructions, and posting date.
+- **CV and Job Matching:** Compares CV information with job requirements to identify relevant skills, strengths, and gaps.
+- **CV Improvement Suggestions:** Provides recommendations to improve and tailor a CV for specific job opportunities.
+- **Tool-Using AI Agent:** Uses LangGraph to connect the assistant to the CV extraction and job-posting tools.
+- **Conversation Memory:** Uses LangGraph's `MemorySaver` checkpointer to maintain conversation state while the application is running.
 
-## Project files
+## Project Structure
 
 ```text
-CV-Assistant/
-├── AI_Powered_CV_and_Job_Matching_Assistant.ipynb
-├── README.md
+CV-Job-Matching-Assistant/
+│
+├── agent/
+│   ├── __init__.py
+│   └── graph.py
+│
+├── tools/
+│   ├── __init__.py
+│   ├── cv_tools.py
+│   └── job_tools.py
+│
+├── services/
+│   ├── __init__.py
+│   └── openai_service.py
+│
+├── config/
+│   └── __init__.py
+│
+├── notebooks/
+│   └── cv_job_matching_assistant.ipynb
+│
+├── test_files/
+│   └── my_cv.pdf
+│
+├── .env
+├── .env.example
 ├── .gitignore
+├── main.py
+├── README.md
 └── requirements.txt
 ```
 
-Place any CV used for testing in your local working folder. Do not commit personal CV documents to a public repository.
+**Main folders:**
+
+- `agent/`: Contains the LangGraph workflow and assistant logic.
+- `tools/`: Contains the CV extraction and job-posting analysis tools.
+- `services/`: Handles OpenAI client and language model initialization.
+- `config/`: Reserved for project configuration.
+- `notebooks/`: Contains the original Jupyter Notebook used as a reference.
+- `test_files/`: Contains local files used for testing.
 
 ## Technologies
 
 - Python
-- Jupyter Notebook
 - LangGraph
 - LangChain
-- `langchain-openai`
+- LangChain OpenAI
 - OpenAI API
-- LangSmith (optional tracing)
-- `pdfplumber`
-- `python-docx`
-- LibreOffice (only for legacy `.doc` conversion)
+- OpenAI GPT-4.1
+- OpenAI Web Search
+- Python-dotenv
+- LangSmith (optional)
+- pdfplumber
+- python-docx
+- LibreOffice (for legacy DOC conversion)
 
 ## Requirements
 
-- Python 3.12 is the version used in the notebook's development environment.
-- An OpenAI API key with access to the models used by the notebook:
-  - `gpt-4.1` for the LangChain assistant.
-  - `gpt-4o-search-preview` for job-posting search.
-- Internet access for OpenAI API calls and job-posting retrieval.
-- Jupyter Notebook or JupyterLab.
-- LibreOffice installed and available as `soffice` on your PATH if you need to process legacy `.doc` files.
+- Python installed on your computer.
+- An OpenAI API key with access to GPT-4.1 and the required API capabilities.
+- Internet connection for OpenAI API requests and job-posting retrieval.
+- LibreOffice installed and available through the `soffice` command if you need to process legacy `.doc` files.
 
-## Installation
+## Installation and Setup
 
-1. Clone this repository:
+### 1. Clone the repository
 
-   ```bash
-   git clone https://github.com/chiheb101/AI-Powered-CV-and-Job-Matching-Assistant.git
-   cd AI-Powered-CV-and-Job-Matching-Assistant
-   ```
+```bash
+git clone https://github.com/chiheb101/AI-Powered-CV-and-Job-Matching-Assistant.git
 
-2. Create and activate a virtual environment.
-
-   **Windows (PowerShell):**
-
-   ```powershell
-   py -3.12 -m venv .venv
-   .venv\Scripts\Activate.ps1
-   ```
-
-   **macOS / Linux:**
-
-   ```bash
-   python3.12 -m venv .venv
-   source .venv/bin/activate
-   ```
-
-3. Install the dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Set your OpenAI API key as an environment variable.
-
-   **Windows (PowerShell):**
-
-   ```powershell
-   $env:OPENAI_API_KEY="your-openai-api-key"
-   ```
-
-   **macOS / Linux:**
-
-   ```bash
-   export OPENAI_API_KEY="your-openai-api-key"
-   ```
-
-5. Start Jupyter:
-
-   ```bash
-   jupyter notebook
-   ```
-
-6. Open `AI_Powered_CV_and_Job_Matching_Assistant.ipynb` and run the cells in order.
-
-## Configuration
-
-The notebook creates an OpenAI client using the `OPENAI_API_KEY` environment variable.
-
-LangSmith tracing is optional. To enable it, configure the following environment variables outside the notebook:
-
-```text
-LANGSMITH_TRACING=true
-LANGSMITH_API_KEY=your-langsmith-api-key
-LANGSMITH_PROJECT=Agents Course
-LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+cd AI-Powered-CV-and-Job-Matching-Assistant
 ```
 
-To run without LangSmith tracing:
+### 2. Create a virtual environment
 
-```text
+**Windows (PowerShell):**
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux:**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file in the project root directory and add your OpenAI API key:
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+```
+
+An optional LangSmith configuration can also be added:
+
+```env
 LANGSMITH_TRACING=false
+LANGSMITH_API_KEY=
+LANGSMITH_PROJECT=CV-Job-Matching-Assistant
 ```
 
-**Important:** Do not hardcode API keys in the notebook. In the notebook's LangSmith configuration cell, read the key from the environment instead:
+Keep your actual `.env` file private. Never upload API keys to a public repository.
 
-```python
-os.environ["LANGSMITH_TRACING"] = os.getenv("LANGSMITH_TRACING", "false")
-os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY", "")
-os.environ["LANGSMITH_PROJECT"] = os.getenv("LANGSMITH_PROJECT", "Agents Course")
-os.environ["LANGSMITH_ENDPOINT"] = "https://api.smith.langchain.com"
+## How to Run the Assistant
+
+Make sure your virtual environment is activated and your `.env` file is configured.
+
+Start the application from the project root:
+
+```bash
+python main.py
 ```
 
-If tracing is disabled, the LangSmith API key is not needed.
+The assistant will start in the terminal and wait for user messages.
 
-## How to use
+To stop the application, type:
 
-1. Put a CV file in the notebook's working directory, or provide the correct path to the CV file.
-2. Run the notebook cells in order to initialize the OpenAI client, tools, LangGraph workflow, and memory checkpointer.
-3. Send the assistant a request that includes the CV file path and, when relevant, the job-posting URL(s).
-4. Review the assistant's response and verify important details before using them in a job application.
+```text
+exit
+```
 
-### Tools implemented in the notebook
+or:
+
+```text
+done
+```
+
+## How to Use
+
+### 1. General Questions
+
+You can ask the assistant general questions about CVs, careers, and job applications.
+
+Example:
+
+```text
+Hello, what can you help me with?
+```
+
+### 2. CV Analysis
+
+Provide the path to your CV and ask the assistant to analyze it.
+
+Example:
+
+```text
+Please analyze my CV.
+
+The file is located at:
+test_files/my_cv.pdf
+```
+
+The assistant can extract and summarize your education, work experience, technical skills, and languages.
+
+### 3. Job Posting Analysis
+
+Provide a job-posting URL and ask the assistant to extract its main information.
+
+Example:
+
+```text
+Analyze this job posting:
+https://example.com/job-posting
+```
+
+The assistant retrieves and organizes the available job details.
+
+### 4. CV and Job Matching
+
+You can ask the assistant to compare your CV with a specific job opportunity.
+
+Example:
+
+```text
+Compare my CV with this job posting.
+
+CV file path: test_files/my_cv.pdf
+
+Job posting URL: https://example.com/job-posting
+
+Identify my matching skills, missing requirements,
+relevant experience, and recommendations for improvement.
+```
+
+The assistant uses the available tools to collect information before generating its comparison.
+
+## Implemented Tools
 
 | Tool | Purpose |
 |---|---|
-| `extract_cv_text(file_path)` | Extracts text from a PDF, DOCX, or DOC CV file. |
-| `job_posting_tool(job_link)` | Uses OpenAI web search to retrieve and summarize information from a job-posting URL. |
+| `extract_cv_text(file_path)` | Extracts text from PDF, DOCX, or DOC CV files. |
+| `job_posting_tool(job_link)` | Analyzes a job-posting URL using OpenAI web search. |
 
-The LangGraph workflow routes messages from the assistant to the tools when needed, then returns to the assistant to produce a response.
+The LangGraph workflow manages the interaction between the language model and these tools. When a tool is needed, the assistant calls it, receives its result, and continues generating the response.
 
-## Current limitations
+## Conversation Memory
 
-- The notebook uses `MemorySaver`, which keeps conversation state in memory. State is not stored permanently and is lost when the Python process/kernel is restarted.
-- PDF extraction uses text extraction through `pdfplumber`. Scanned/image-only PDFs may not produce usable text because OCR is not implemented.
-- Legacy `.doc` conversion requires LibreOffice and the `soffice` command.
-- Some job-posting websites may block automated access, require authentication, or make postings unavailable.
-- API requests are subject to the OpenAI account's model access, billing, and rate limits.
-- The notebook currently contains example job-posting URLs and a sample CV filename in its demonstration cells. Replace these with your own test inputs before running it.
+The application uses LangGraph's `MemorySaver` checkpointer to maintain conversation state.
 
-## Security and privacy
+The same conversation thread can retain previous messages while the application is running. However, conversation state is stored in memory and is lost when the Python process is restarted.
 
-- Never commit API keys, passwords, `.env` files, or other credentials.
-- Do not publish real CVs or personal documents without the owner's explicit permission.
-- Review and clear notebook outputs before pushing to GitHub. Outputs can contain CV text, personal information, job-search details, or API responses.
-- Review `git status` before every commit. The `.gitignore` file helps exclude common sensitive files, but it cannot guarantee that every private file is excluded.
-- If an API key has already been committed or shared, revoke it and create a new one. Removing it from the latest notebook version does not remove it from Git history.
+## Current Limitations
 
-## Possible future improvements
+- PDF extraction uses `pdfplumber`. Scanned or image-only PDFs may not produce usable text because OCR is not implemented.
+- Legacy `.doc` conversion requires LibreOffice.
+- Some job-posting websites may block automated access, require authentication, or make job details unavailable.
+- Conversation memory is temporary and is not saved permanently.
+- AI-generated responses may contain inaccuracies. Important CV and job details should be verified before using them in applications.
+- OpenAI API requests are subject to account billing, model availability, and rate limits.
 
-- Add a simple web interface for uploading a CV and entering job links.
-- Add persistent conversation storage.
-- Add OCR support for scanned CVs.
-- Add automated tests and more robust error handling/retry logic.
-- Add a configurable scoring method for comparing a CV with job requirements.
+## Security and Privacy
+
+- Never upload API keys, passwords, or `.env` files to GitHub.
+- Do not publish personal CV documents without the owner's permission.
+- Keep personal test documents inside the local `test_files/` folder.
+- Review notebook outputs before sharing the original notebook, as they may contain personal information or API responses.
+- Check `git status` before committing files to make sure sensitive information is not included.
+
+## Possible Future Improvements
+
+- Develop a web interface for CV uploads and job-posting URLs.
+- Add permanent conversation storage.
+- Implement OCR for scanned CV documents.
+- Improve error handling and validation.
+- Add automated tests.
+- Introduce a configurable CV and job compatibility scoring system.
+- Improve the accuracy and consistency of CV and job-matching responses.
 
 ## License
 

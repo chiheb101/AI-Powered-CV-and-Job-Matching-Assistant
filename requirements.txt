@@ -8,3 +8,4 @@ pdfplumber
 ipython
 pydantic
 typing_extensions
+python-dotenv
